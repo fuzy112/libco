@@ -18,6 +18,7 @@ set(SOURCE_FILES
         co_epoll.cpp
         co_hook_sys_call.cpp
         co_routine.cpp
+        co_comm.cpp
         coctx.cpp
         coctx_swap.S)
 
@@ -36,7 +37,18 @@ set_target_properties(colib_shared PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 # For mac osx, the extension name will be .dylib
 set_target_properties(colib_shared PROPERTIES VERSION ${LIBCO_VERSION} SOVERSION ${LIBCO_VERSION})
 
+include(GNUInstallDirs)
 
+install(TARGETS colib_static colib_shared
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    )
+
+install(FILES co_closure.h co_comm.h co_epoll.h co_routine_inner.h
+    co_routine_specific.h co_routine.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Macro for add example target
 macro(add_example_target EXAMPLE_TARGET)
@@ -53,3 +65,5 @@ add_example_target(poll)
 add_example_target(setenv)
 add_example_target(specific)
 add_example_target(thread)
+
+include(CPack)

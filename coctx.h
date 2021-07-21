@@ -29,12 +29,13 @@ struct coctx_t
 {
 #if defined(__i386__)
 	void *regs[ 8 ];
-#else
+#elif defined(__x86_64__)
 	void *regs[ 14 ];
+#elif defined(__aarch64__)
+	void *regs[ 30 ];
 #endif
 	size_t ss_size;
 	char *ss_sp;
-	
 };
 
 int coctx_init( coctx_t *ctx );
